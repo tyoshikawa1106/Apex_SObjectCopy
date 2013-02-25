@@ -1,0 +1,46 @@
+<apex:page Controller="SObjectCloneController" action="{!init}" tabStyle="Contract">
+	<apex:sectionHeader title="Forc.com" subTitle="sObject Copy" />
+	<apex:form id="formId">
+		<apex:pageBlock mode="maindetail">
+			<apex:pageBlockButtons >
+				<apex:commandButton value=" Copy1 " title=" Copy1 " action="{!doCopy1}" rerender="formId" />
+				<apex:commandButton value=" Copy2 " title=" Copy2 " action="{!doCopy2}" rerender="formId" />
+				<apex:commandButton value=" Copy3 " title=" Copy3 " action="{!doCopy3}" rerender="formId" />
+				<apex:commandButton value=" Copy4 " title=" Copy4 " action="{!doCopy4}" rerender="formId" />
+				<apex:commandButton value=" Copy5 " title=" Copy5 " action="{!doCopy5}" rerender="formId" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection >
+				<!-- 契約ID -->
+				<apex:outputField value="{!objContract.Id}" />
+				<apex:outputField value="{!copyContract.Id}" />
+				<!-- 契約番号 -->
+				<apex:outputField value="{!objContract.ContractNumber}" />
+				<apex:outputField value="{!copyContract.ContractNumber}" />
+				<!-- 取引先名 -->
+				<apex:outputField value="{!objContract.AccountId}" />
+				<apex:outputField value="{!copyContract.AccountId}" />
+				<!-- 契約開始日 -->
+				<apex:outputField value="{!objContract.StartDate}" />
+				<apex:outputField value="{!copyContract.StartDate}" />
+				<!-- 契約 期間(月) -->
+				<apex:outputField value="{!objContract.ContractTerm}" />
+				<apex:outputField value="{!copyContract.ContractTerm}" />
+				<!-- 所有者ID -->
+				<apex:outputField value="{!objContract.OwnerId}" />
+				<apex:outputField value="{!copyContract.OwnerId}" />
+				<!-- 作成者 ID -->
+				<apex:outputField value="{!objContract.CreatedById}" />
+				<apex:outputField value="{!copyContract.CreatedById}" />
+				<!-- 作成日 -->
+				<apex:outputField value="{!objContract.CreatedDate}" />
+				<apex:outputField value="{!copyContract.CreatedDate}" />
+				<!-- 最終更新者 ID -->
+				<apex:outputField value="{!objContract.LastModifiedById}" />
+				<apex:outputField value="{!copyContract.LastModifiedById}" />
+				<!-- 最終更新日 -->
+				<apex:outputField value="{!objContract.LastModifiedDate}" />
+				<apex:outputField value="{!copyContract.LastModifiedDate}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>
