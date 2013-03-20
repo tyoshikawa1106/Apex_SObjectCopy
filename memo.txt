@@ -1,0 +1,1 @@
+sObjectのclone処理サンプル
