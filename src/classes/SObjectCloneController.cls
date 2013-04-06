@@ -1,5 +1,5 @@
 /*
- * sObjectのコピー・コントローラークラス
+ * sObjectのコピー
  * © 2013 Force.com Developer
  * ----------------------------------------
  * @createdDate      : 2013/01/01
@@ -12,9 +12,9 @@
 public with sharing class SObjectCloneController {
 	
 	// 取引先
-	public Account objAccount {get; set;}
+	public Account account {get; set;}
 	// 契約
-	public Contract objContract {get; set;}
+	public Contract contract {get; set;}
 	// 契約(コピー)
 	public Contract copyContract {get; set;}
 	
@@ -27,7 +27,7 @@ public with sharing class SObjectCloneController {
 		System.debug('◆◆◆◆SObjectCloneController:START');
 		
 		// 契約取得
-		this.objContract = new Contract();
+		this.contract = new Contract();
 		// 契約コピー初期化
 		this.copyContract = new Contract();
 		
@@ -43,7 +43,7 @@ public with sharing class SObjectCloneController {
 		System.debug('◆◆◆◆init:START');
 		
 		// 契約取得
-		this.objContract = getContract();
+		this.contract = getContract();
 		
 		System.debug('◆◆◆◆init:END');
 	}
@@ -54,7 +54,7 @@ public with sharing class SObjectCloneController {
 	 * @return	: 契約
 	 */
 	private Contract getContract() {
-		List<Contract> objContracts = [
+		List<Contract> contracts = [
 			select
 				 Id
 				,ContractNumber
@@ -71,8 +71,8 @@ public with sharing class SObjectCloneController {
 			limit 1
 		];
 		
-		if (objContracts.isEmpty() != true) {
-			return objContracts[0];
+		if (contracts.isEmpty() != true) {
+			return contracts[0];
 		}
 		
 		return new Contract();
@@ -88,7 +88,7 @@ public with sharing class SObjectCloneController {
 		
 		// コピー
 		this.copyContract = new Contract();
-		this.copyContract = this.objContract.clone(false, false, false, false);
+		this.copyContract = this.contract.clone(false, false, false, false);
 		
 		System.debug('◆◆◆◆doCopy1:END');
 	}
@@ -103,7 +103,7 @@ public with sharing class SObjectCloneController {
 		
 		// コピー
 		this.copyContract = new Contract();
-		this.copyContract = this.objContract.clone(true, false, false, false);
+		this.copyContract = this.contract.clone(true, false, false, false);
 		
 		System.debug('◆◆◆◆doCopy2:END');
 	}
@@ -118,7 +118,7 @@ public with sharing class SObjectCloneController {
 		
 		// コピー
 		this.copyContract = new Contract();
-		this.copyContract = this.objContract.clone(false, true, false, false);
+		this.copyContract = this.contract.clone(false, true, false, false);
 		
 		System.debug('◆◆◆◆doCopy3:END');
 	}
@@ -133,7 +133,7 @@ public with sharing class SObjectCloneController {
 		
 		// コピー
 		this.copyContract = new Contract();
-		this.copyContract = this.objContract.clone(false, false, true, false);
+		this.copyContract = this.contract.clone(false, false, true, false);
 		
 		System.debug('◆◆◆◆doCopy4:END');
 	}
@@ -148,7 +148,7 @@ public with sharing class SObjectCloneController {
 		
 		// コピー
 		this.copyContract = new Contract();
-		this.copyContract = this.objContract.clone(false, false, false, true);
+		this.copyContract = this.contract.clone(false, false, false, true);
 		
 		System.debug('◆◆◆◆doCopy5:END');
 	}

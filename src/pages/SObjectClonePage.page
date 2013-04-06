@@ -1,13 +1,13 @@
-<apex:page Controller="SObjectCloneController" action="{!init}" tabStyle="Contract">
+<apex:page Controller="SObjectCloneController" title="SObjectClone" showHeader="true" sidebar="false" action="{!init}" tabStyle="Contract" id="page">
 	<apex:sectionHeader title="Forc.com" subTitle="sObject Copy" />
-	<apex:form id="formId">
+	<apex:form id="form">
 		<apex:pageBlock mode="maindetail">
 			<apex:pageBlockButtons >
-				<apex:commandButton value=" Copy1 " title=" Copy1 " action="{!doCopy1}" rerender="formId" />
-				<apex:commandButton value=" Copy2 " title=" Copy2 " action="{!doCopy2}" rerender="formId" />
-				<apex:commandButton value=" Copy3 " title=" Copy3 " action="{!doCopy3}" rerender="formId" />
-				<apex:commandButton value=" Copy4 " title=" Copy4 " action="{!doCopy4}" rerender="formId" />
-				<apex:commandButton value=" Copy5 " title=" Copy5 " action="{!doCopy5}" rerender="formId" />
+				<apex:commandButton value=" Copy1 " title=" Copy1 " action="{!doCopy1}" rerender="form" />
+				<apex:commandButton value=" Copy2 " title=" Copy2 " action="{!doCopy2}" rerender="form" />
+				<apex:commandButton value=" Copy3 " title=" Copy3 " action="{!doCopy3}" rerender="form" />
+				<apex:commandButton value=" Copy4 " title=" Copy4 " action="{!doCopy4}" rerender="form" />
+				<apex:commandButton value=" Copy5 " title=" Copy5 " action="{!doCopy5}" rerender="form" />
 			</apex:pageBlockButtons>
 			<apex:pageBlockSection >
 				<!-- 契約ID -->
