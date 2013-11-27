@@ -1,5 +1,5 @@
 <apex:page Controller="SObjectCloneController" title="SObjectClone" showHeader="true" sidebar="false" action="{!init}" tabStyle="Contract" id="page">
-    <apex:sectionHeader title="Forc.com" subTitle="sObject Copy" />
+    <apex:sectionHeader title="Force.com" subTitle="sObject Copy" />
     <apex:form id="form">
         <apex:pageBlock mode="maindetail">
             <apex:pageBlockButtons >
