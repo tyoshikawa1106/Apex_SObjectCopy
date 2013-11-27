@@ -1,560 +1,414 @@
-/*
+/**
  * sObjectのコピー
  * © 2013 Force.com Developer
  * ----------------------------------------
- * @createdDate      : 2013/01/01
- * @createdName      : TAIKI,YOSHIKAWA
- * ----------------------------------------
- * @lastModifiedDate : 2013/01/01
- * @lastModifiedName : TAIKI,YOSHIKAWA
+ * @createdName      : Taiki,Yoshikawa
+ * @lastModifiedName : Taiki,Yoshikawa
  * ----------------------------------------
  */
 @isTest
 private class SObjectCloneControllerTest {
 
-	/*
-	 * コンストラクタ・テスト
-	 */
+    /**
+     * コンストラクタ
+     */
     static testMethod void SObjectCloneControllerTest() {
-        System.debug('◆◆◆◆SObjectCloneControllerTest:START');
-        
-        // ユーザ
-        User user = getUser();
-        
-        // テスト実施
-        System.RunAs(user) {
             
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            System.assertEquals(String.isEmpty(cls.contract.Id), true);
-            System.assertEquals(String.isEmpty(cls.copyContract.Id), true);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        Test.startTest();
         
-        System.debug('◆◆◆◆SObjectCloneControllerTest:END');
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        System.assertEquals(String.isEmpty(cls.contract.Id), true);
+        System.assertEquals(String.isEmpty(cls.copyContract.Id), true);
+        
+        Test.stopTest();
     }
     
-    /*
-	 * init・テスト
-	 */
+    /**
+     * init
+     */
     static testMethod void initTest1() {
-        System.debug('◆◆◆◆initTest1:START');
+            
+        // 取引先データ作成
+        Id accountId = createAccount();
+        // 契約データ作成
+        Id contractId = createContract(accountId);
         
-        // ユーザ
-        User user = getUser();
+        // テスト開始
+        Test.startTest();
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-	        // 取引先データ作成
-			Id accountId = createAccount();
-			// 契約データ作成
-			Id contractId = createContract(accountId);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            System.assertEquals(String.isEmpty(cls.contract.Id), false);
-            System.assertEquals(String.isEmpty(cls.copyContract.Id), true);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        System.assertEquals(String.isEmpty(cls.contract.Id), false);
+        System.assertEquals(String.isEmpty(cls.copyContract.Id), true);
         
-        System.debug('◆◆◆◆initTest1:END');
+        Test.stopTest();
     }
     
-    /*
-	 * init・テスト
-	 */
+    /**
+     * init
+     */
     static testMethod void initTest2() {
-        System.debug('◆◆◆◆initTest2:START');
+            
+        Test.startTest();
         
-        // ユーザ
-        User user = getUser();
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        System.assertEquals(String.isEmpty(cls.contract.Id), true);
+        System.assertEquals(String.isEmpty(cls.copyContract.Id), true);
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            System.assertEquals(String.isEmpty(cls.contract.Id), true);
-            System.assertEquals(String.isEmpty(cls.copyContract.Id), true);
-            
-            // テスト終了
-            Test.stopTest();
-        }
-        
-        System.debug('◆◆◆◆initTest2:END');
+        Test.stopTest();
     }
     
-    /*
-	 * doCopy1・テスト
-	 */
+    /**
+     * doCopy1
+     */
     static testMethod void doCopy1Test() {
-        System.debug('◆◆◆◆doCopy1Test:START');
+            
+        // 取引先データ作成
+        Id accountId = createAccount();
+        // 契約データ作成
+        Id contractId = createContract(accountId);
         
-        // ユーザ
-        User user = getUser();
+        Test.startTest();
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-	        // 取引先データ作成
-			Id accountId = createAccount();
-			// 契約データ作成
-			Id contractId = createContract(accountId);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            // doCopy1
-            cls.doCopy1();
-            
-            // ID・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.Id), false);
-            System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
-            
-            // 契約番号・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
-            System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
-            
-            // 取引先ID・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
-            System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
-            
-            // 契約開始日・コピーあり
-            System.assertNotEquals(cls.contract.StartDate, null);
-            System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
-            
-            // 契約期間・コピーあり
-            System.assertNotEquals(cls.contract.ContractTerm, null);
-            System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
-            
-            // 所有者・コピーあり
-            System.assertNotEquals(cls.contract.OwnerId, null);
-            System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
-            
-            // 作成者・コピーなし
-            System.assertNotEquals(cls.contract.CreatedById, null);
-            System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
-            
-            // 作成日・コピーなし
-            System.assertNotEquals(cls.contract.CreatedDate, null);
-            System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
-            
-            // 最終更新者・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedById, null);
-            System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
-            
-            // 最終更新日・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedDate, null);
-            System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        // doCopy1
+        cls.doCopy1();
         
-        System.debug('◆◆◆◆doCopy1Test:END');
+        // ID・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.Id), false);
+        System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
+        
+        // 契約番号・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
+        System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
+        
+        // 取引先ID・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
+        System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
+        
+        // 契約開始日・コピーあり
+        System.assertNotEquals(cls.contract.StartDate, null);
+        System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
+        
+        // 契約期間・コピーあり
+        System.assertNotEquals(cls.contract.ContractTerm, null);
+        System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
+        
+        // 所有者・コピーあり
+        System.assertNotEquals(cls.contract.OwnerId, null);
+        System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
+        
+        // 作成者・コピーなし
+        System.assertNotEquals(cls.contract.CreatedById, null);
+        System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
+        
+        // 作成日・コピーなし
+        System.assertNotEquals(cls.contract.CreatedDate, null);
+        System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
+        
+        // 最終更新者・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedById, null);
+        System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
+        
+        // 最終更新日・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedDate, null);
+        System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
+        
+        Test.stopTest();
     }
     
-    /*
-	 * doCopy2・テスト
-	 */
+    /**
+     * doCopy2・テスト
+     */
     static testMethod void doCopy2Test() {
-        System.debug('◆◆◆◆doCopy2Test:START');
+            
+        // 取引先データ作成
+        Id accountId = createAccount();
+        // 契約データ作成
+        Id contractId = createContract(accountId);
         
-        // ユーザ
-        User user = getUser();
+        Test.startTest();
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-	        // 取引先データ作成
-			Id accountId = createAccount();
-			// 契約データ作成
-			Id contractId = createContract(accountId);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            // doCopy2
-            cls.doCopy2();
-            
-            // ID・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.Id), false);
-            System.assertEquals(cls.contract.Id, cls.copyContract.Id);
-            
-            // 契約番号・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
-            System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
-            
-            // 取引先ID・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
-            System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
-            
-            // 契約開始日・コピーあり
-            System.assertNotEquals(cls.contract.StartDate, null);
-            System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
-            
-            // 契約期間・コピーあり
-            System.assertNotEquals(cls.contract.ContractTerm, null);
-            System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
-            
-            // 所有者・コピーあり
-            System.assertNotEquals(cls.contract.OwnerId, null);
-            System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
-            
-            // 作成者・コピーなし
-            System.assertNotEquals(cls.contract.CreatedById, null);
-            System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
-            
-            // 作成日・コピーなし
-            System.assertNotEquals(cls.contract.CreatedDate, null);
-            System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
-            
-            // 最終更新者・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedById, null);
-            System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
-            
-            // 最終更新日・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedDate, null);
-            System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        // doCopy2
+        cls.doCopy2();
         
-        System.debug('◆◆◆◆doCopy2Test:END');
+        // ID・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.Id), false);
+        System.assertEquals(cls.contract.Id, cls.copyContract.Id);
+        
+        // 契約番号・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
+        System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
+        
+        // 取引先ID・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
+        System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
+        
+        // 契約開始日・コピーあり
+        System.assertNotEquals(cls.contract.StartDate, null);
+        System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
+        
+        // 契約期間・コピーあり
+        System.assertNotEquals(cls.contract.ContractTerm, null);
+        System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
+        
+        // 所有者・コピーあり
+        System.assertNotEquals(cls.contract.OwnerId, null);
+        System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
+        
+        // 作成者・コピーなし
+        System.assertNotEquals(cls.contract.CreatedById, null);
+        System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
+        
+        // 作成日・コピーなし
+        System.assertNotEquals(cls.contract.CreatedDate, null);
+        System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
+        
+        // 最終更新者・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedById, null);
+        System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
+        
+        // 最終更新日・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedDate, null);
+        System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
+        
+        Test.stopTest();
     }
     
-    /*
-	 * doCopy3・テスト
-	 */
+    /**
+     * doCopy3
+     */
     static testMethod void doCopy3Test() {
-        System.debug('◆◆◆◆doCopy3Test:START');
+            
+        // 取引先データ作成
+        Id accountId = createAccount();
+        // 契約データ作成
+        Id contractId = createContract(accountId);
         
-        // ユーザ
-        User user = getUser();
+        Test.startTest();
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-	        // 取引先データ作成
-			Id accountId = createAccount();
-			// 契約データ作成
-			Id contractId = createContract(accountId);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            // doCopy3
-            cls.doCopy3();
-            
-            // ID・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.Id), false);
-            System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
-            
-            // 契約番号・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
-            System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
-            
-            // 取引先ID・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
-            System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
-            
-            // 契約開始日・コピーあり
-            System.assertNotEquals(cls.contract.StartDate, null);
-            System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
-            
-            // 契約期間・コピーあり
-            System.assertNotEquals(cls.contract.ContractTerm, null);
-            System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
-            
-            // 所有者・コピーあり
-            System.assertNotEquals(cls.contract.OwnerId, null);
-            System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
-            
-            // 作成者・コピーなし
-            System.assertNotEquals(cls.contract.CreatedById, null);
-            System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
-            
-            // 作成日・コピーなし
-            System.assertNotEquals(cls.contract.CreatedDate, null);
-            System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
-            
-            // 最終更新者・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedById, null);
-            System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
-            
-            // 最終更新日・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedDate, null);
-            System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        // doCopy3
+        cls.doCopy3();
         
-        System.debug('◆◆◆◆doCopy3Test:END');
+        // ID・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.Id), false);
+        System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
+        
+        // 契約番号・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
+        System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
+        
+        // 取引先ID・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
+        System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
+        
+        // 契約開始日・コピーあり
+        System.assertNotEquals(cls.contract.StartDate, null);
+        System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
+        
+        // 契約期間・コピーあり
+        System.assertNotEquals(cls.contract.ContractTerm, null);
+        System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
+        
+        // 所有者・コピーあり
+        System.assertNotEquals(cls.contract.OwnerId, null);
+        System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
+        
+        // 作成者・コピーなし
+        System.assertNotEquals(cls.contract.CreatedById, null);
+        System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
+        
+        // 作成日・コピーなし
+        System.assertNotEquals(cls.contract.CreatedDate, null);
+        System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
+        
+        // 最終更新者・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedById, null);
+        System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
+        
+        // 最終更新日・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedDate, null);
+        System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
+        
+        Test.stopTest();
     }
     
-    /*
-	 * doCopy4・テスト
-	 */
+    /**
+     * doCopy4
+     */
     static testMethod void doCopy4Test() {
-        System.debug('◆◆◆◆doCopy4Test:START');
+            
+        // 取引先データ作成
+        Id accountId = createAccount();
+        // 契約データ作成
+        Id contractId = createContract(accountId);
         
-        // ユーザ
-        User user = getUser();
+        Test.startTest();
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-	        // 取引先データ作成
-			Id accountId = createAccount();
-			// 契約データ作成
-			Id contractId = createContract(accountId);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            // doCopy4
-            cls.doCopy4();
-            
-            // ID・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.Id), false);
-            System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
-            
-            // 契約番号・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
-            System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
-            
-            // 取引先ID・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
-            System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
-            
-            // 契約開始日・コピーあり
-            System.assertNotEquals(cls.contract.StartDate, null);
-            System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
-            
-            // 契約期間・コピーあり
-            System.assertNotEquals(cls.contract.ContractTerm, null);
-            System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
-            
-            // 所有者・コピーあり
-            System.assertNotEquals(cls.contract.OwnerId, null);
-            System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
-            
-            // 作成者・コピーあり
-            System.assertNotEquals(cls.contract.CreatedById, null);
-            System.assertEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
-            
-            // 作成日・コピーあり
-            System.assertNotEquals(cls.contract.CreatedDate, null);
-            System.assertEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
-            
-            // 最終更新者・コピーあり
-            System.assertNotEquals(cls.contract.LastModifiedById, null);
-            System.assertEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
-            
-            // 最終更新日・コピーあり
-            System.assertNotEquals(cls.contract.LastModifiedDate, null);
-            System.assertEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        // doCopy4
+        cls.doCopy4();
         
-        System.debug('◆◆◆◆doCopy4Test:END');
+        // ID・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.Id), false);
+        System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
+        
+        // 契約番号・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
+        System.assertNotEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
+        
+        // 取引先ID・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
+        System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
+        
+        // 契約開始日・コピーあり
+        System.assertNotEquals(cls.contract.StartDate, null);
+        System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
+        
+        // 契約期間・コピーあり
+        System.assertNotEquals(cls.contract.ContractTerm, null);
+        System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
+        
+        // 所有者・コピーあり
+        System.assertNotEquals(cls.contract.OwnerId, null);
+        System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
+        
+        // 作成者・コピーあり
+        System.assertNotEquals(cls.contract.CreatedById, null);
+        System.assertEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
+        
+        // 作成日・コピーあり
+        System.assertNotEquals(cls.contract.CreatedDate, null);
+        System.assertEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
+        
+        // 最終更新者・コピーあり
+        System.assertNotEquals(cls.contract.LastModifiedById, null);
+        System.assertEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
+        
+        // 最終更新日・コピーあり
+        System.assertNotEquals(cls.contract.LastModifiedDate, null);
+        System.assertEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
+        
+        Test.stopTest();
     }
     
-    /*
-	 * doCopy5・テスト
-	 */
+    /**
+     * doCopy5
+     */
     static testMethod void doCopy5Test() {
-        System.debug('◆◆◆◆doCopy5Test:START');
+            
+        // 取引先データ作成
+        Id accountId = createAccount();
+        // 契約データ作成
+        Id contractId = createContract(accountId);
         
-        // ユーザ
-        User user = getUser();
+        // テスト開始
+        Test.startTest();
         
-        // テスト実施
-        System.RunAs(user) {
-            
-            // カレントページにパラメータを設定
-	        PageReference pageRef = getPageReference();
-	        Test.setCurrentPage(pageRef);
-	        
-	        // 取引先データ作成
-			Id accountId = createAccount();
-			// 契約データ作成
-			Id contractId = createContract(accountId);
-            
-            // テスト開始
-            Test.startTest();
-            
-            // コンストラクタ
-            SObjectCloneController cls = new SObjectCloneController();
-            // init
-            cls.init();
-            // doCopy5
-            cls.doCopy5();
-            
-            // ID・コピーなし
-            System.assertEquals(String.isEmpty(cls.contract.Id), false);
-            System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
-            
-            // 契約番号・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
-            System.assertEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
-            
-            // 取引先ID・コピーあり
-            System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
-            System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
-            
-            // 契約開始日・コピーあり
-            System.assertNotEquals(cls.contract.StartDate, null);
-            System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
-            
-            // 契約期間・コピーあり
-            System.assertNotEquals(cls.contract.ContractTerm, null);
-            System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
-            
-            // 所有者・コピーあり
-            System.assertNotEquals(cls.contract.OwnerId, null);
-            System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
-            
-            // 作成者・コピーなし
-            System.assertNotEquals(cls.contract.CreatedById, null);
-            System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
-            
-            // 作成日・コピーなし
-            System.assertNotEquals(cls.contract.CreatedDate, null);
-            System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
-            
-            // 最終更新者・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedById, null);
-            System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
-            
-            // 最終更新日・コピーなし
-            System.assertNotEquals(cls.contract.LastModifiedDate, null);
-            System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
-            
-            // テスト終了
-            Test.stopTest();
-        }
+        // コンストラクタ
+        SObjectCloneController cls = new SObjectCloneController();
+        // init
+        cls.init();
+        // doCopy5
+        cls.doCopy5();
         
-        System.debug('◆◆◆◆doCopy5Test:END');
+        // ID・コピーなし
+        System.assertEquals(String.isEmpty(cls.contract.Id), false);
+        System.assertNotEquals(cls.contract.Id, cls.copyContract.Id);
+        
+        // 契約番号・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.ContractNumber), false);
+        System.assertEquals(cls.contract.ContractNumber, cls.copyContract.ContractNumber);
+        
+        // 取引先ID・コピーあり
+        System.assertEquals(String.isEmpty(cls.contract.AccountId), false);
+        System.assertEquals(cls.contract.AccountId, cls.copyContract.AccountId);
+        
+        // 契約開始日・コピーあり
+        System.assertNotEquals(cls.contract.StartDate, null);
+        System.assertEquals(cls.contract.StartDate, cls.copyContract.StartDate);
+        
+        // 契約期間・コピーあり
+        System.assertNotEquals(cls.contract.ContractTerm, null);
+        System.assertEquals(cls.contract.ContractTerm, cls.copyContract.ContractTerm);
+        
+        // 所有者・コピーあり
+        System.assertNotEquals(cls.contract.OwnerId, null);
+        System.assertEquals(cls.contract.OwnerId, cls.copyContract.OwnerId);
+        
+        // 作成者・コピーなし
+        System.assertNotEquals(cls.contract.CreatedById, null);
+        System.assertNotEquals(cls.contract.CreatedById, cls.copyContract.CreatedById);
+        
+        // 作成日・コピーなし
+        System.assertNotEquals(cls.contract.CreatedDate, null);
+        System.assertNotEquals(cls.contract.CreatedDate, cls.copyContract.CreatedDate);
+        
+        // 最終更新者・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedById, null);
+        System.assertNotEquals(cls.contract.LastModifiedById, cls.copyContract.LastModifiedById);
+        
+        // 最終更新日・コピーなし
+        System.assertNotEquals(cls.contract.LastModifiedDate, null);
+        System.assertNotEquals(cls.contract.LastModifiedDate, cls.copyContract.LastModifiedDate);
+        
+        // テスト終了
+        Test.stopTest();
     }
     
-    /*
-     * ユーザ取得
+    /**
+     * 取引先データの作成
+     * @param   : none
+     * @return  : 取引先ID
      */
-    private static User getUser() {
-    	return [select Id from User where Id =: UserInfo.getUserId() limit 1];
+    private static Id createAccount() {
+        
+        Account account = new Account(
+             Name = 'テスト取引先'
+            ,AccountNumber = 'A-0000'
+            ,Site = 'テスト部門'
+        );
+        
+        insert account;
+        
+        return account.Id;
     }
     
-    /*
-     * テストページ取得
+    /**
+     * 契約データの作成
+     * @param   : 取引先ID [prmAccountId]
+     * @return  : 契約ID
      */
-    private static PageReference getPageReference() {
-    	return new PageReference('TestPage');
+    private static Id createContract(Id prmAccountId) {
+        
+        Contract contract = new Contract(
+             AccountId = prmAccountId
+            ,StartDate = system.today()
+            ,ContractTerm = 3
+        );
+        
+        insert contract;
+        
+        return contract.Id;
     }
-    
-    /*
-	 * 取引先データの作成
-	 * @param	: なし
-	 * @return	: 取引先ID
-	 */
-	private static Id createAccount() {
-		System.debug('◆◆◆◆createAccount:START');
-		
-		Account account = new Account(
-			 Name = 'テスト取引先'
-			,AccountNumber = 'A-0000'
-			,Site = 'テスト部門'
-		);
-		
-		insert account;
-		
-		System.debug('◆◆◆◆createAccount:END');
-		return account.Id;
-	}
-	
-	/*
-	 * 契約データの作成
-	 * @param	: 取引先ID	[prmAccountId]
-	 * @return	: 契約ID
-	 */
-	private static Id createContract(Id prmAccountId) {
-		System.debug('◆◆◆◆createContract:START');
-		
-		Contract contract = new Contract(
-			 AccountId = prmAccountId
-			,StartDate = system.today()
-			,ContractTerm = 3
-		);
-		
-		insert contract;
-		
-		System.debug('◆◆◆◆createContract:END');
-		return contract.Id;
-	}
 }
